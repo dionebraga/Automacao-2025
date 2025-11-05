@@ -1,8 +1,7 @@
 # 🤖 Aula 9 – Automação de Testes com Python, Behave e Selenium
 
 ### ✍️ Facilitadores  
-**Dione Braga**  
-**Diony Costa**
+**Dione Braga**  **e** **Diony Costa**
 
 ---
 
@@ -127,8 +126,6 @@ O **Selenium** é uma biblioteca **open source** (código aberto) licenciada sob
 4. Crie um novo projeto e grave uma automação que abra o site do **Instituto Joga Junto**.  
 5. Execute e observe o fluxo.
 
-🧪 **Desafio rápido:** Grave e envie uma mensagem pelo site com seu nome.
-
 ---
 
 ## 🎨 HTML e CSS
@@ -228,7 +225,7 @@ git commit -m "Adiciona melhorias e explicações da aula"
 git push origin ajustes-explicacao
 ```
 
-> 💬 **Explique aos alunos:** as *branches* permitem testar sem alterar o código principal.
+> 💬 **Explicação:** as *branches* permitem testar sem alterar o código principal.
 
 ---
 
@@ -251,10 +248,10 @@ Crie um script que:
 
 ---
 
-## 🧠 Conceitos que Devem Ser Reforçados em Aula
+## 🧠 Conceitos que Devem Ser Reforçados
 
-- O que é automação de testes.  
-- Diferença entre testar manualmente e automatizar.  
+- O que é automação de testes? “Automação de testes é fazer o computador testar por nós, de forma rápida e repetitiva.”  
+- Diferença entre testar manualmente e automatizar. "No teste manual, o QA precisa clicar, preencher formulários e observar os resultados. Na automação, o QA cria um roteiro de código e o computador repete o teste automaticamente, sempre igual, economizando tempo e reduzindo falhas humanas."
 - Que o Selenium é uma biblioteca que **controla navegadores**.  
 - Que o Behave permite escrever testes em **linguagem natural (BDD)**.  
 - Importância do HTML, CSS e DOM para os seletores e testes automatizados.  
