@@ -1,171 +1,280 @@
-# 🤖 Automação de Testes com Python, Selenium e Behave
+# 🤖 Aula 9 – Automação de Testes com Python, Behave e Selenium
 
-Este projeto demonstra uma automação de testes com **Python**, **Selenium WebDriver** e **Behave (BDD)** para acessar o site do [Instituto Joga Junto](https://www.jogajuntoinstituto.org/).  
-O objetivo é ensinar os alunos a construir e executar testes automatizados com base em comportamento (Behavior Driven Development).
-
----
-
-## 🚀 Objetivo
-
-- Criar um **teste automatizado** que simula o comportamento de um usuário acessando o site pelo navegador.
-- Ensinar o uso de **cenários BDD com Behave**.
-- Mostrar como gerenciar ambientes e dependências com **venv** e **requirements.txt**.
-- Demonstrar **integração prática entre código Python e testes comportamentais**.
+### Facilitadores: **Dione Braga Ferreira** e **Diony Costa**
 
 ---
 
-## 🧱 Estrutura do Projeto
+## 🎯 Objetivo da Aula
 
+Aprender a **configurar o ambiente de automação de testes** com Python, utilizando **Behave** (BDD) e **Selenium WebDriver**, explorando o funcionamento do DOM, HTML, CSS e ferramentas de apoio como **Chocolatey** e **VSCode Extensions**.  
+Ao final da aula, cada squad será capaz de criar e executar seu **primeiro script automatizado**.
+
+---
+
+## 🧱 Estrutura de Pastas
+
+```
 Aula 9 - Automacao/
 │
 ├── features/
-│ ├── buscar_site.feature # Cenário BDD em linguagem Gherkin
-│ └── steps/
-│ └── steps_buscar_site.py # Implementação dos passos do cenário
+│   ├── buscar_site.feature
+│   └── steps/
+│       └── steps_buscar_site.py
 │
-├── test_automacao.py # Script de teste simples (sem BDD)
-├── requirements.txt # Lista de bibliotecas necessárias
-├── README.md # Documento explicativo do projeto
-├── .gitignore # Arquivo para ignorar itens desnecessários no GitHub
-└── .vscode/
-└── settings.json # Configurações locais do VSCode (opcional)
+├── test_automacao.py
+└── requirements.txt
+```
 
 ---
+
+## ⚙️ Preparando o Ambiente
+
+### 🪟 Passo 1 – Criar o projeto
+
+Abra o **PowerShell** e execute:
+
+```powershell
+cd Desktop
+mkdir "Aula_QA_2025"
+cd "Aula_QA_2025"
+mkdir "Aula 9 - Automacao"
+cd "Aula 9 - Automacao"
+```
+
 ---
 
-## ⚙️ Instalação e Configuração
+### 🧩 Passo 2 – Criar ambiente virtual e ativar
 
-### 1️⃣ Clone o repositório
-
-```bash
-git clone https://github.com/dionebraga/Automacao-2025.git
-cd Automacao-2025/Aula\ 9\ -\ Automacao
-
-2️⃣ Crie o ambiente virtual
+```powershell
 python -m venv venv
+.env\Scripts\Activate.ps1
+```
 
-3️⃣ Ative o ambiente virtual
+💡 *O ambiente virtual (venv) isola as bibliotecas do projeto para evitar conflitos.*
 
-Windows (PowerShell):
+---
 
-.\venv\Scripts\activate
+### 📦 Passo 3 – Instalar dependências
 
-4️⃣ Instale as dependências
-pip install -r requirements.txt
+```powershell
+pip install behave selenium
+pip freeze > requirements.txt
+```
 
-▶️ Execução dos Testes
-🔹 Rodar o teste direto (sem BDD)
-python test_automacao.py
+---
 
+## ▶️ Executando o Projeto
 
-Esse comando abrirá o navegador Microsoft Edge, realizará a busca no Google e exibirá no terminal:
+Para rodar o teste:
 
-✅ Primeiro resultado encontrado: Instituto Joga Junto
-🌐 Página aberta com sucesso!
-
-🔹 Rodar com BDD (Behave)
+```powershell
 behave
+```
 
+📊 **Exemplo de saída esperada:**
+```
+1 feature passed, 0 failed, 0 skipped
+1 scenario passed, 0 failed, 0 skipped
+3 steps passed, 0 failed, 0 skipped
+```
 
-O Behave executa o arquivo .feature e segue o comportamento descrito no formato Gherkin.
+💬 Isso indica que sua automação foi executada com sucesso.
 
-🧩 Exemplo de Cenário — features/buscar_site.feature
-Funcionalidade: Acessar o site do Instituto Joga Junto pelo Google
+---
 
-  Cenário: Usuário realiza a busca e acessa o site com sucesso
-    Dado que o navegador Microsoft Edge está aberto
-    Quando eu pesquisar por "Instituto Joga Junto" no Google
-    Então devo ver o site do Instituto aberto com sucesso
+## 🌐 Uvicorn (para contextualização)
 
-🧠 Exemplo de Step — features/steps/steps_buscar_site.py
+> **Uvicorn** é um servidor de aplicação ASGI (Asynchronous Server Gateway Interface) rápido e leve para Python, projetado para hospedar aplicações web e APIs. Ele executa seu código Python, recebendo requisições web e repassando-as para o aplicativo, como os frameworks FastAPI, Starlette e Django.
 
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from webdriver_manager.microsoft import EdgeChromiumDriverManager
-from selenium.webdriver.edge.service import Service as EdgeService
-import time
-from behave import given, when, then
+---
 
-@given('que o navegador Microsoft Edge está aberto')
-def step_open_browser(context):
-    options = webdriver.EdgeOptions()
-    options.add_argument("--start-maximized")
-    context.driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()), options=options)
-    context.driver.get("https://www.google.com")
+## 🧰 Extensões úteis do VSCode
 
-@when('eu pesquisar por "Instituto Joga Junto" no Google')
-def step_search_google(context):
-    search_box = context.driver.find_element(By.NAME, "q")
-    search_box.send_keys("Instituto Joga Junto")
-    search_box.send_keys(Keys.RETURN)
-    time.sleep(2)
+Antes de prosseguir, explore essas extensões com o time:
 
-@then('devo ver o site do Instituto aberto com sucesso')
-def step_validate_site(context):
-    primeiro_resultado = context.driver.find_element(By.CSS_SELECTOR, "h3")
-    print(f"✅ Primeiro resultado encontrado: {primeiro_resultado.text}")
-    primeiro_resultado.click()
-    time.sleep(4)
-    print("🌐 Página aberta com sucesso!")
-    context.driver.quit()
+| Extensão | Função |
+|-----------|--------|
+| 🧮 **Rainbow CSV** | Destaca colunas em arquivos `.csv` com cores, útil para analisar planilhas de testes. |
+| 📓 **Jupyter Notebook** | Executa blocos de código Python interativos dentro do VSCode. |
+| 💡 **Cursor** | VSCode com IA integrada — ajuda a escrever e entender código rapidamente. |
 
-💻 Tecnologias Utilizadas
+🕒 **Atividade:** explore cada extensão por 10 minutos e anote como ela pode ser útil em automação.
 
-Tecnologia	Finalidade
-Python	Linguagem base do projeto
-Selenium WebDriver	Controle do navegador (Edge)
-Behave	Framework BDD para testes automatizados
-WebDriver Manager	Gerenciamento automático de drivers
-Microsoft Edge	Navegador usado nos testes
-VSCode	Ambiente de desenvolvimento recomendado
+---
 
-🧾 Arquivo .gitignore
+## 🧩 Entendendo o Selenium
 
-Salve este conteúdo em um arquivo chamado .gitignore na raiz do projeto:
+O **Selenium** é uma biblioteca **open source** (código aberto) licenciada sob a Apache 2.0, compatível com quase todos os navegadores.  
+É simples, poderoso e reconhecido oficialmente pelo **W3C (World Wide Web Consortium)**.
 
-# Ambiente virtual
-venv/
-.venv/
+### 🔧 Componentes do Selenium
 
-# Cache do Python
-__pycache__/
-*.pyc
+| Componente | Função |
+|-------------|--------|
+| **Selenium IDE** | Extensão de navegador que grava e reproduz ações. Ideal para iniciantes. |
+| **Selenium Grid** | Executa testes em múltiplas máquinas e navegadores simultaneamente. |
+| **Selenium WebDriver** | Controla o navegador via código Python. É o que usamos aqui. |
 
-# Configurações do VSCode
-.vscode/
+---
 
-# Logs
-*.log
+### 🧭 Configurando o Selenium IDE no navegador
 
-# Arquivos temporários
-*.tmp
-*.bak
+1. Vá até a Chrome Web Store ou Edge Add-ons.  
+2. Pesquise por **“Selenium IDE”**.  
+3. Clique em **Adicionar ao navegador**.  
+4. Crie um novo projeto e grave uma automação que abra o site do **Instituto Joga Junto**.  
+5. Execute e observe o fluxo.
 
-# Dados de execução
-*.sqlite3
+🧪 **Desafio rápido:** Grave e envie uma mensagem pelo site com seu nome.
 
-# Arquivos do sistema
-.DS_Store
-Thumbs.db
+---
 
-📬 Créditos
+## 🎨 HTML e CSS
 
-Projeto criado e mantido por
-Dione Braga Ferreira
-Facilitadora – Ilhabela Tech / Instituto Joga Junto
-📧 dionebraga.work@gmail.com
+Pense que estamos construindo **uma casa na web**:
 
-📍 Ilhabela/SP
+- 🧱 **HTML (HyperText Markup Language)** → é a estrutura (paredes, janelas, portas).  
+- 🎨 **CSS (Cascading Style Sheets)** → é a pintura e decoração (cores, estilos, fontes).  
 
-💡 Dica Extra
+### Principais atributos HTML:
 
-Se quiser manter o navegador aberto após o teste para demonstração, adicione:
+| Atributo | Função |
+|-----------|--------|
+| **id** | Identificador único de um elemento. |
+| **class** | Agrupa elementos com características semelhantes. |
+| **style** | Aplica estilos diretamente no elemento. |
+| **title** | Mostra uma dica (tooltip) ao passar o mouse. |
 
-time.sleep(10)
+---
 
-antes do context.driver.quit() no step final.
+## 🌳 DOM (Document Object Model)
 
-🧠 “Automatizar é transformar o conhecimento humano em eficiência digital.”
+O **DOM** representa a estrutura hierárquica do documento HTML como uma árvore de elementos.
 
-— Dione Braga Ferreira
+💡 **Exemplo:**
+```python
+driver.find_element("id", "nome")
+driver.find_element("xpath", "//button[text()='Enviar']")
+```
+
+> O Selenium interage com o **DOM**, encontrando elementos e executando ações como clicar, digitar e validar.
+
+---
+
+## 🍫 Chocolatey
+
+### O que é?
+O **Chocolatey** é um gerenciador de pacotes para Windows — semelhante ao `apt` (Ubuntu) e `yum` (Red Hat).  
+Ele facilita a instalação de softwares essenciais para o QA.
+
+---
+
+### 📥 Instalação do Chocolatey
+
+Execute no **PowerShell (como administrador):**
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; `
+[System.Net.ServicePointManager]::SecurityProtocol = `
+[System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
+iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+```
+
+---
+
+### 📦 Instale os pacotes necessários
+
+```powershell
+choco install selenium-all-drivers
+choco install selenium
+choco install firefox
+```
+
+✅ Isso garante compatibilidade entre Selenium e os navegadores.
+
+---
+
+## 🚀 Subindo o Projeto no GitHub
+
+### 1️⃣ Inicialize o repositório
+
+```powershell
+git init
+git add .
+git commit -m "Primeira automação com Behave e Selenium"
+```
+
+### 2️⃣ Crie o repositório remoto
+
+1. Vá até [github.com/new](https://github.com/new)
+2. Nomeie o repositório (ex: `aula9_automacao`)
+3. Copie o link HTTPS e conecte:
+
+```powershell
+git remote add origin https://github.com/SEU_USUARIO/aula9_automacao.git
+git push -u origin main
+```
+
+---
+
+## 🌿 Criar uma Branch
+
+```powershell
+git checkout -b ajustes-explicacao
+git add .
+git commit -m "Adiciona melhorias e explicações da aula"
+git push origin ajustes-explicacao
+```
+
+> 💬 **Explique aos alunos:** as *branches* permitem testar sem alterar o código principal.
+
+---
+
+## 💻 Desafio do Caique 1 — Automação Individual
+
+Crie um script que:
+1. Abra o navegador.  
+2. Pesquise “Instituto Joga Junto” no Google.  
+3. Acesse o site e envie a mensagem:  
+   `"Meu primeiro script de automação - NOME DA SUA SQUAD"`.
+
+---
+
+## 🤝 Desafio do Caique 2 — Automação em Squad
+
+1. Automatize o acesso ao **WhatsApp Web**.  
+2. Envie a mensagem:  
+   `"Automação do WhatsApp - NOME DO SEU SQUAD"`.  
+3. Suba o código em um repositório no GitHub da sua squad.
+
+---
+
+## 🧠 Conceitos que Devem Ser Reforçados em Aula
+
+- O que é automação de testes.  
+- Diferença entre testar manualmente e automatizar.  
+- Que o Selenium é uma biblioteca que **controla navegadores**.  
+- Que o Behave permite escrever testes em **linguagem natural (BDD)**.  
+- Importância do HTML, CSS e DOM para os seletores e testes automatizados.  
+- Uso de ambientes virtuais e versionamento com Git/GitHub.
+
+---
+
+## 📜 Conclusão
+
+Nesta aula você aprendeu a:
+
+✅ Criar um ambiente virtual  
+✅ Instalar e rodar o Behave com Selenium  
+✅ Criar e versionar o projeto no GitHub  
+✅ Entender HTML, CSS e DOM na automação  
+✅ Utilizar Chocolatey para instalar pacotes  
+✅ Trabalhar com **branches** e **squads**  
+
+> “A automação é o próximo passo da qualidade. Ela não substitui o olhar humano, mas potencializa a eficiência do QA.”
+
+---
+
+### ✍️ Facilitadores  
+**Dione Braga Ferreira**  
+**Diony Costa**
